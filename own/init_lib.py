@@ -12,6 +12,7 @@ def initialise_train():
     Categories = list(enumerate(sorted(np.unique(train['Category']))))
     Descriptions = list(enumerate(sorted(np.unique(train['Descript']))))
 
+
     # 2. set up dictionaries
     category_name_with_index = {i: name for i, name in Categories}
 

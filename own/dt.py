@@ -11,6 +11,8 @@ class MyDecisionTree(object):
     def fit(self, samples, target):
         training_samples = [TrainingSample(s, t) for s, t in zip(samples, target)]
         predicting_features = list(range(len(samples[0])))
+        print predicting_features
+
         self.root_node = self.create_decision_tree(training_samples,
                                                    predicting_features)
 
@@ -32,6 +34,11 @@ class MyDecisionTree(object):
                         klass = default_klass
             predicted_klasses.append(klass)
         return predicted_klasses
+
+    def score(self, X, target, allow_unclassified=True):
+        predicted = self.predict(X, allow_unclassified=allow_unclassified)
+        n_matches = sum(p == t for p, t in zip(predicted, target))
+        return 1.0 * n_matches / len(X)
 
     def create_decision_tree(self, training_samples, predicting_features):
         if not predicting_features:
@@ -77,6 +84,7 @@ class MyDecisionTree(object):
         for partition in samples_partition.values():
             sub_klasses = [s.klass for s in partition]
             feature_entropy += (len(partition) / N) * self.entropy(sub_klasses)
+
 
         return self.entropy(klasses) - feature_entropy
 
